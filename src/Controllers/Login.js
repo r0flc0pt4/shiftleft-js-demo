@@ -20,6 +20,17 @@ class Login {
     );
     return desCipher.write(secretText, 'utf8', 'hex'); // BAD: weak encryption
   }
+  
+  encryptDataAgain(secretText) {
+    const crypto = require('crypto');
+
+    // Weak encryption
+    const desCipher = crypto.createCipheriv(
+      'des',
+      "This is a simple password, don't guess it"
+    );
+    return desCipher.write(secretText, 'utf8', 'hex'); // BAD: weak encryption
+  }
 
   async handleLogin(req, res, client, data) {
     const { username, password, keeponline } = data;
@@ -44,6 +55,7 @@ class Login {
           zipCode: result.zipCode
         };
         const creditInfo = encryptData(result.creditCard);
+        const creditInfoAgain = encryptDataAgain(result.creditCard);
         logger.info(`user: ${JSON.stringify(user)} successfully logged in`);
         logger.info(
           `user ${user.fname} credit info: ${JSON.stringify(creditInfo)}`
